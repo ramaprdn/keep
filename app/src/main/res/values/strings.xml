@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Keep</string>
+    <string name="slogan">The Easiest way to save your daily life</string>
+    <string name="signup_slogan">It\'s time to start your life without worry. Keep everything save and sound.</string>
+    <string name="btn_signup"><u>Sign Up Now</u></string>
+    <string name="btn_login"><u>Login</u></string>
 </resources>
