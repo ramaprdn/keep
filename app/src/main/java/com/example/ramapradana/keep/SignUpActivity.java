@@ -7,7 +7,6 @@ import android.support.design.button.MaterialButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,8 +46,6 @@ public class SignUpActivity extends AppCompatActivity {
         tvEmail = this.findViewById(R.id.tv_email);
         tvPassword = this.findViewById(R.id.tv_password);
 
-
-        getSupportActionBar().hide();
         tvLogin = this.findViewById(R.id.btn_intent_login);
         tvLogin.setOnClickListener(v -> finish());
 
@@ -101,7 +98,7 @@ public class SignUpActivity extends AppCompatActivity {
                     progressDialog.hide();
                     Toast.makeText(SignUpActivity.this, response.body().getMsg(), Toast.LENGTH_LONG).show();
                     if (response.body().isStatus() == true){
-                        MainActivity.start(SignUpActivity.this);
+                        LoginActivity.start(SignUpActivity.this);
                     }
                 }
 

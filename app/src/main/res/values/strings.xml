@@ -4,4 +4,7 @@
     <string name="signup_slogan">It\'s time to start your life without worry. Keep everything save and sound.</string>
     <string name="btn_signup"><u>Sign Up Now</u></string>
     <string name="btn_login"><u>Login</u></string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
