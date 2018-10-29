@@ -23,7 +23,7 @@
             android:layout_height="120dp"
             android:layout_marginTop="50dp"
             android:gravity="center"
-            android:src="@drawable/xs" />
+            android:src="@drawable/xs"/>
 
         <!-- TODO: Update blank fragment layout -->
         <TextView
@@ -194,9 +194,5 @@
                 android:text="Jl.Mahendradata" />
 
         </LinearLayout>
-
-
-
-
     </LinearLayout>
 </FrameLayout>
