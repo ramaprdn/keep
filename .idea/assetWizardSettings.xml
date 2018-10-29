@@ -28,9 +28,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="profile" />
-                            <entry key="sourceFile" value="C:\Users\Rama Pradana" />
+                            <entry key="outputName" value="ic_person_black_24dp" />
+                            <entry key="sourceFile" value="C:\Users\SEIGINE" />
                           </map>
                         </option>
                       </PersistentState>

@@ -30,6 +30,7 @@ dependencies {
     implementation 'me.anwarshahriar:calligrapher:1.0'
     testImplementation 'junit:junit:4.12'
 
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation "com.squareup.retrofit2:retrofit:2.3.0"
     implementation "com.squareup.retrofit2:converter-gson:2.3.0"
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
