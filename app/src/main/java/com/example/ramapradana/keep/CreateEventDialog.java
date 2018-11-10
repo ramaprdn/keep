@@ -68,7 +68,6 @@ public class CreateEventDialog extends AppCompatDialogFragment {
                                 Snackbar.make(fmEvent, "could not connect to server.", Snackbar.LENGTH_LONG).show();
                             }
 
-
                         }
 
                         @Override

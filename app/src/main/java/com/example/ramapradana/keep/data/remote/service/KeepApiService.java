@@ -1,5 +1,6 @@
 package com.example.ramapradana.keep.data.remote.service;
 
+import com.example.ramapradana.keep.data.remote.model.EventsResponse;
 import com.example.ramapradana.keep.data.remote.model.LoginApiResponse;
 import com.example.ramapradana.keep.data.remote.model.PostApiResponse;
 
@@ -18,6 +19,9 @@ public interface KeepApiService {
     Call<LoginApiResponse> postLogin(@Query("username") String username, @Query("password") String password);
 
     @FormUrlEncoded
-    @POST("event")
+    @POST("event/create")
     Call<PostApiResponse> postCreateNewEvent(@Field("name") String name);
+
+    @GET("event")
+    Call<EventsResponse> getEvent();
 }
