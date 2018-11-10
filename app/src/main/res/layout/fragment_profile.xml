@@ -6,16 +6,20 @@
     tools:context=".ProfileFragment"
     android:fitsSystemWindows="true">
 
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="400dp">
+
+
 
         <ImageView
             android:id="@+id/imageView2"
             android:layout_width="match_parent"
             android:layout_height="310dp"
             android:layout_marginTop="-40dp"
-            tools:src="@tools:sample/backgrounds/scenic[11]" />
+            android:src="@drawable/bg"/>
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/myPict"
@@ -62,16 +66,29 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Keep"
+                        android:textStyle="bold"
+
                         android:textSize="20sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingTop="1dp"
-                        android:text="1dp"
+                        android:text="4"
 
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/garis"
+                        android:outlineSpotShadowColor="@color/colorOrange"/>
+
 
                 </LinearLayout>
 
@@ -86,6 +103,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Teman"
+                        android:textStyle="bold"
                         android:textSize="20sp" />
 
                     <TextView
@@ -94,9 +112,10 @@
                         android:paddingTop="1dp"
                         android:text="360"
 
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
+                        android:textSize="20sp"/>
                 </LinearLayout>
+
+
             </LinearLayout>
         </android.support.v7.widget.CardView>
     </RelativeLayout>
@@ -106,7 +125,7 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="130dp"
+        android:layout_marginTop="140dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -194,5 +213,15 @@
                 android:text="Jl.Mahendradata" />
 
         </LinearLayout>
+
+
+        <Button
+            android:id="@+id/butt"
+            android:layout_marginTop="3dp"
+            android:text="EDIT WOI"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
     </LinearLayout>
 </FrameLayout>
