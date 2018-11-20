@@ -28,7 +28,7 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".SignUpActivity" />
-        <activity android:name=".DetailFriendActivity"/>
+         <activity android:name=".SignUpActivity" />
 
 
         <service android:name=".firebase.MessagingService"
