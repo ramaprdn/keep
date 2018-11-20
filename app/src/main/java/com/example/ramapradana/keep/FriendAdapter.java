@@ -2,6 +2,8 @@ package com.example.ramapradana.keep;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -40,6 +42,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.MyViewHold
 
         myDialog = new Dialog(mContext);
         myDialog.setContentView(R.layout.detail_friend);
+        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
 
         vHolder.item_friend.setOnClickListener(new View.OnClickListener() {

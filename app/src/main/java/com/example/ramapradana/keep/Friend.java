@@ -20,6 +20,7 @@ public class Friend {
     }
 
     public String getName() {
+
         return Name;
     }
 
@@ -28,19 +29,23 @@ public class Friend {
     }
 
     public int getPhoto() {
+
         return Photo;
     }
+
 
 
     public void setName(String name) {
         Name = name;
     }
 
-    public void setPhone(String email) {
+    public void setEmail(String email) {
         Email = email;
     }
 
     public void setPhoto(int photo) {
         Photo = photo;
     }
+
+
 }
