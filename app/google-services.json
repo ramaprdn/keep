@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "303737359566",
+    "firebase_url": "https://keep-d6c9c.firebaseio.com",
+    "project_id": "keep-d6c9c",
+    "storage_bucket": "keep-d6c9c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:303737359566:android:243168a21f393926",
+        "android_client_info": {
+          "package_name": "com.example.ramapradana.keep"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "303737359566-c6jq9hd3vpdn14tfijpvppvktgrlsdi5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ramapradana.keep",
+            "certificate_hash": "64078012493c43f29cf30cfcd98576500f147d02"
+          }
+        },
+        {
+          "client_id": "303737359566-qqih1jsvroiv3ecqm1v7d0fjj3sauvml.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBp1iXU7DXkEdIvJsvdq3LT1KlyCK-t6bc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "303737359566-qqih1jsvroiv3ecqm1v7d0fjj3sauvml.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -5,18 +5,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".EventFragment"
-    android:fitsSystemWindows="true">
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_event_item"
+    tools:context=".EventFragment">
+    
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/sr_event"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:listitem="@layout/item_event"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-        >
+        android:layout_height="match_parent">
 
-    </android.support.v7.widget.RecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_event_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/item_event"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            >
+
+        </android.support.v7.widget.RecyclerView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_create"

@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
+import com.example.ramapradana.keep.data.local.database.DatabaseHelper;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,22 +20,26 @@ public class MainActivity extends AppCompatActivity {
     ViewPager viewPager;
     private List<Integer> fragmentIconId = new ArrayList<>();
     TabLayout tabLayout;
+    DatabaseHelper databaseHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Calligrapher calligrapher = new Calligrapher(this);
         calligrapher.setFont(this, "Product Sans Regular.ttf", true);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        databaseHelper = new DatabaseHelper(this);
 
         viewPager = findViewById(R.id.view_pager);
+        viewPager.setWillNotDraw(false);
         if (viewPager != null){
             setupViewPager(viewPager);
         }
-
         tabLayout = findViewById(R.id.tab);
         tabLayout.setupWithViewPager(viewPager);
 

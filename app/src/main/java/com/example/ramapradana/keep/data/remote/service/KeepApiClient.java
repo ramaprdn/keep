@@ -16,6 +16,8 @@ public class KeepApiClient {
     private static KeepApiService INSTANCE;
     private static final String BASE_URL = "http://172.17.100.2:8000/api/";
 
+//    private static final String BASE_URL = "http://192.168.43.30:8000/api/";
+
     public static KeepApiService getKeepApiService(){
         if (INSTANCE == null){
             OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();

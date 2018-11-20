@@ -1,5 +1,7 @@
 package com.example.ramapradana.keep;
 
+import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ramapradana.keep.data.remote.model.EventsItem;
 
@@ -18,6 +21,11 @@ import java.util.List;
 public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder>{
 
     private List<EventsItem> dataset = new ArrayList<>();
+    private android.support.v4.app.FragmentManager fragmentManager;
+
+    public EventsAdapter(android.support.v4.app.FragmentManager fragmentManager){
+        this.fragmentManager = fragmentManager;
+    }
 
     @NonNull
     @Override
@@ -36,6 +44,11 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
         viewHolder.tvEventName.setText(eventsItem.getEventName());
         viewHolder.tvDateAndFileCount.setText(String.valueOf(eventsItem.getCreatedAt()) + " - " + String.valueOf(eventsItem.getEventFileCount()) + " files");
 
+        viewHolder.llItem.setOnLongClickListener(v -> {
+            MenuEventDialog menuEventDialog = new MenuEventDialog(eventsItem);
+            menuEventDialog.show(fragmentManager,"event men u");
+            return true;
+        });
     }
 
     @Override

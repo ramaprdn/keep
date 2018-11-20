@@ -15,11 +15,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="#000"
-            android:layout_marginRight="26dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
