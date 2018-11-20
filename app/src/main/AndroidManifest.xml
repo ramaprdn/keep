@@ -27,7 +27,6 @@
         <activity android:name=".Splash" />
         <activity android:name=".LoginActivity" />
          <activity android:name=".SignUpActivity" />
-        <activity android:name=".DetailFriendActivity"></activity>
 
 
     </application>
