@@ -14,10 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
         <activity android:name=".Splash">
-
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,16 +25,17 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".SignUpActivity" />
-         <activity android:name=".SignUpActivity" />
 
-
-        <service android:name=".firebase.MessagingService"
+        <service
+            android:name=".firebase.MessagingService"
             android:stopWithTask="false">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
+        <activity android:name=".CreateNoteActivity" />
+        <activity android:name=".EventDetailActivity"></activity>
     </application>
 
 </manifest>

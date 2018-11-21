@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
         Calligrapher calligrapher = new Calligrapher(this);
         calligrapher.setFont(this, "Product Sans Regular.ttf", true);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

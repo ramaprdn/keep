@@ -1,8 +1,13 @@
 package com.example.ramapradana.keep.data.remote.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
-public class EventsItem{
+import java.io.Serializable;
+
+public class EventsItem implements Serializable {
 
 	@SerializedName("event_id")
 	private int eventId;
@@ -18,6 +23,7 @@ public class EventsItem{
 
 	@SerializedName("created_at")
 	private String createdAt;
+
 
 	public void setEventId(int eventId){
 		this.eventId = eventId;
@@ -70,4 +76,5 @@ public class EventsItem{
 			",created_at = '" + createdAt + '\'' + 
 			"}";
 		}
+
 }

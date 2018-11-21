@@ -3,11 +3,6 @@
   <component name="WizardSettings">
     <option name="children">
       <map>
-        <entry key="imageWizard">
-          <value>
-            <PersistentState />
-          </value>
-        </entry>
         <entry key="vectorWizard">
           <value>
             <PersistentState>
@@ -23,11 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-<<<<<<< Updated upstream
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/content/ic_add_black_24dp.xml" />
-=======
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/editor/ic_mode_edit_black_24dp.xml" />
->>>>>>> Stashed changes
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/hardware/ic_keyboard_backspace_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -37,14 +28,9 @@
                         </option>
                         <option name="values">
                           <map>
-<<<<<<< Updated upstream
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="plus_white" />
-=======
-                            <entry key="outputName" value="ic_mode_edit_black_24dp" />
-                            <entry key="overrideSize" value="true" />
->>>>>>> Stashed changes
-                            <entry key="sourceFile" value="C:\Users\SEIGINE" />
+                            <entry key="outputName" value="ic_back" />
+                            <entry key="sourceFile" value="C:\Users\Rama Pradana" />
                           </map>
                         </option>
                       </PersistentState>

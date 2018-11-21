@@ -3,6 +3,7 @@ package com.example.ramapradana.keep;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
@@ -22,9 +23,11 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
 
     private List<EventsItem> dataset = new ArrayList<>();
     private android.support.v4.app.FragmentManager fragmentManager;
+    private Context context;
 
-    public EventsAdapter(android.support.v4.app.FragmentManager fragmentManager){
+    public EventsAdapter(android.support.v4.app.FragmentManager fragmentManager, Context context){
         this.fragmentManager = fragmentManager;
+        this.context = context;
     }
 
     @NonNull
@@ -46,8 +49,14 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
 
         viewHolder.llItem.setOnLongClickListener(v -> {
             MenuEventDialog menuEventDialog = new MenuEventDialog(eventsItem);
-            menuEventDialog.show(fragmentManager,"event men u");
+            menuEventDialog.show(fragmentManager,"event menu");
             return true;
+        });
+
+        viewHolder.llItem.setOnClickListener((v) -> {
+            Intent intent = new Intent(context, EventDetailActivity.class);
+            intent.putExtra("event", eventsItem);
+            context.startActivity(intent);
         });
     }
 

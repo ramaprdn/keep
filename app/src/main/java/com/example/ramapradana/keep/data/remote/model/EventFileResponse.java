@@ -4,26 +4,33 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.List;
+import com.google.gson.annotations.SerializedName;
 
-public class EventsResponse implements Parcelable {
-	private List<EventsItem> events;
-	private boolean status;
+public class EventFileResponse implements Parcelable {
+
+	@SerializedName("msg")
 	private String msg;
 
-	public String getMsg() {
-		return msg;
-	}
+	@SerializedName("file")
+	private List<FileItem> file;
 
-	public void setMsg(String msg) {
+	@SerializedName("status")
+	private boolean status;
+
+	public void setMsg(String msg){
 		this.msg = msg;
 	}
 
-	public void setEvents(List<EventsItem> events){
-		this.events = events;
+	public String getMsg(){
+		return msg;
 	}
 
-	public List<EventsItem> getEvents(){
-		return events;
+	public void setFile(List<FileItem> file){
+		this.file = file;
+	}
+
+	public List<FileItem> getFile(){
+		return file;
 	}
 
 	public void setStatus(boolean status){
@@ -37,8 +44,9 @@ public class EventsResponse implements Parcelable {
 	@Override
  	public String toString(){
 		return 
-			"EventsResponse{" +
-			"events = '" + events + '\'' + 
+			"EventFileResponse{" + 
+			"msg = '" + msg + '\'' + 
+			",file = '" + file + '\'' + 
 			",status = '" + status + '\'' + 
 			"}";
 		}

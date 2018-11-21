@@ -63,7 +63,7 @@ public class EventFragment extends android.support.v4.app.Fragment {
 
         db = new DatabaseHelper(view.getContext());
 
-        eventAdapter = new EventsAdapter(getFragmentManager());
+        eventAdapter = new EventsAdapter(getFragmentManager(), getContext());
 
         if (this.isNetworkConnected()){
             this.loadEvent();
@@ -133,7 +133,6 @@ public class EventFragment extends android.support.v4.app.Fragment {
                             Snackbar.make(rvEvent, unSync + " unsync item. Try to refresh it.", Snackbar.LENGTH_LONG).show();
                         }
 
-                        loadFromLocal();
                         srEvent.setRefreshing(false);
 //                        Snackbar.make(rvEvent, response.body().getEvents().toString(), Snackbar.LENGTH_LONG).show();
                     }else if(!response.body().isStatus()){
@@ -141,13 +140,14 @@ public class EventFragment extends android.support.v4.app.Fragment {
                         srEvent.setRefreshing(false);
                     }
                 }
-
+                loadFromLocal();
             }
 
             @Override
             public void onFailure(Call<EventsResponse> call, Throwable t) {
                 Snackbar.make(rvEvent, "Cannot load event", Snackbar.LENGTH_LONG).show();
                 srEvent.setRefreshing(false);
+                loadFromLocal();
             }
         });
     }

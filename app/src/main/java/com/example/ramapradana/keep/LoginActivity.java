@@ -78,7 +78,6 @@ public class LoginActivity extends AppCompatActivity {
                 progressDialog.setCancelable(false);
                 progressDialog.setCanceledOnTouchOutside(false);
 
-
                 call = KeepApiClient.getKeepApiService()
                         .postLogin(username, password);
                 call.enqueue(new Callback<LoginApiResponse>() {
