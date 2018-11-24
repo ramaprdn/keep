@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Splash">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activity_edit" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".Splash" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".SignUpActivity" />
 
