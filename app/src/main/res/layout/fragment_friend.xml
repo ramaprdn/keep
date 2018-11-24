@@ -35,8 +35,7 @@
             android:layout_toRightOf="@id/foto"
             android:text="Ir. H. Joko Widodo"
             android:textStyle="bold"
-            android:textSize="20sp"
-            android:onClick="showToast"/>
+            android:textSize="20sp"/>
 
         <TextView
             android:layout_marginLeft="10dp"
