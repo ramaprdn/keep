@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -28,7 +28,8 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="8dp">
+        android:layout_marginBottom="8dp"
+        android:layout_below="@id/app_bar">
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/sr_eventfile"
@@ -46,6 +47,43 @@
             </android.support.v7.widget.RecyclerView>
         </android.support.v4.widget.SwipeRefreshLayout>
 
+        <com.github.clans.fab.FloatingActionMenu
+            android:id="@+id/floating_action_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="16dp"
+            app:menu_showShadow="true"
+            app:menu_fab_label=""
+            app:menu_openDirection="up"
+            app:menu_colorNormal="@color/colorPrimaryDark"
+            >
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fab_create_note"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fab_label="Create Note"
+                app:fab_size="mini"
+                app:fab_colorNormal="@color/colorPrimaryDark"
+                android:src="@drawable/ic_note_add_white"
+                />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fab_upload_file"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fab_label="Upload File"
+                app:fab_size="mini"
+                app:fab_colorNormal="@color/colorPrimaryDark"
+                android:src="@drawable/ic_attach_file_white"
+                />
+
+        </com.github.clans.fab.FloatingActionMenu>
+
+
     </RelativeLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+</RelativeLayout>

@@ -13,13 +13,14 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
+import com.example.ramapradana.keep.adapter.EventsAdapter;
 import com.example.ramapradana.keep.data.local.database.DatabaseHelper;
 import com.example.ramapradana.keep.data.remote.model.EventsItem;
 import com.example.ramapradana.keep.data.remote.model.EventsResponse;
@@ -45,11 +46,11 @@ public class EventFragment extends android.support.v4.app.Fragment {
     private DatabaseHelper db;
     private View view;
     private List<EventsItem> eventsItemList = new ArrayList<>();
+    private CardView cvCreateEvent;
 
     public EventFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,6 +61,7 @@ public class EventFragment extends android.support.v4.app.Fragment {
         view = inflater.inflate(R.layout.fragment_event, container, false);
         rvEvent = view.findViewById(R.id.rv_event_item);
         srEvent = view.findViewById(R.id.sr_event);
+        cvCreateEvent = view.findViewById(R.id.cv_create_event);
 
         db = new DatabaseHelper(view.getContext());
 
@@ -91,8 +93,7 @@ public class EventFragment extends android.support.v4.app.Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        FloatingActionButton fabCreate = getView().findViewById(R.id.fab_create);
-        fabCreate.setOnClickListener((v) -> {
+        cvCreateEvent.setOnClickListener((v) -> {
             CreateEventDialog createEventDialog = new CreateEventDialog();
             createEventDialog.setTargetFragment(this, 1);
             createEventDialog.show(getFragmentManager(), "create event");
@@ -150,6 +151,12 @@ public class EventFragment extends android.support.v4.app.Fragment {
                 loadFromLocal();
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        loadFromLocal();
+        super.onResume();
     }
 
     public void loadFromLocal(){

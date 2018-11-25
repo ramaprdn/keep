@@ -45,4 +45,19 @@ public interface KeepApiService {
     @GET("event/{id}")
     Call<EventFileResponse> getEventFile(@Path("id") int eventId, @Query("access_token") String accessToken);
 
+    @FormUrlEncoded
+    @POST("event/note/{id}")
+    Call<PostApiResponse> postUpdateNote(
+            @Path("id") int eventFileId,
+            @Field("title") String title,
+            @Field("content") String content,
+            @Field("access_token") String token);
+
+    @FormUrlEncoded
+    @POST("event/file/{id}/delete")
+    Call<PostApiResponse> deleteFileOrNote(@Path("id") int fileId, @Field("access_token") String token);
+
+    @FormUrlEncoded
+    @POST("event/delete")
+    Call<PostApiResponse> deleteEvent(@Field("event_id") int eventId, @Field("access_token") String token);
 }

@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -29,7 +30,6 @@ public class CreateNoteActivity extends AppCompatActivity {
     private TextInputEditText mContent;
     private String title;
     private String content;
-    private Call<CreateNoteResponse> call;
     private DatabaseHelper db;
     private FileItem fileItem;
     private boolean update;
@@ -54,6 +54,8 @@ public class CreateNoteActivity extends AppCompatActivity {
         this.update = intent.getBooleanExtra("update", false);
         if (update){
             fileItem = (FileItem) intent.getSerializableExtra("file");
+            Toast.makeText(this, fileItem.getEventfileId() + "", Toast.LENGTH_LONG).show();
+            Log.d("FILE ID", fileItem.getEventfileId() + "");
             mTitle.setText(fileItem.getEventfileTitle());
             mContent.setText(fileItem.getEventfileContent());
             toolbar.setTitle("Update Note");
@@ -87,22 +89,56 @@ public class CreateNoteActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_save){
+            this.title = mTitle.getText().toString();
+            this.content = mContent.getText().toString();
+
+            ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage("saving note...");
+            progressDialog.show();
+            progressDialog.setCancelable(false);
+            progressDialog.setCanceledOnTouchOutside(false);
+
+            SharedPreferences sharedPreferences = getSharedPreferences("credential", Context.MODE_PRIVATE);
+            String token = sharedPreferences.getString("access_token", "");
+
             if (update){
-                Toast.makeText(this, "update", Toast.LENGTH_LONG).show();
+                Call<PostApiResponse> callUpateNote = KeepApiClient.getKeepApiService()
+                        .postUpdateNote(
+                                fileItem.getEventfileId(),
+                                title,
+                                content,
+                                token);
+
+                callUpateNote.enqueue(new Callback<PostApiResponse>() {
+                    @Override
+                    public void onResponse(Call<PostApiResponse> call, Response<PostApiResponse> response) {
+                        progressDialog.hide();
+                        if (response.isSuccessful()){
+                            if (response.body().isStatus()){
+//                                Toast.makeText(getApplicationContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();
+                                String[] args = {String.valueOf(fileItem.getEventfileId())};
+                                boolean updated = db.updateNote(title, content, args);
+                                if (!updated){
+                                    Toast.makeText(getApplicationContext(), "Failed to update note. Try to save it again or go back and refresh", Toast.LENGTH_LONG).show();
+                                }
+                                onBackPressed();
+                                finish();
+                            }
+                            else{
+                                Toast.makeText(getApplicationContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<PostApiResponse> call, Throwable t) {
+                        progressDialog.hide();
+                        Toast.makeText(getApplicationContext(), "Failed to update note!", Toast.LENGTH_LONG).show();
+                    }
+                });
             }else{
-                this.title = mTitle.getText().toString();
-                this.content = mContent.getText().toString();
 
-                ProgressDialog progressDialog = new ProgressDialog(this);
-                progressDialog.setMessage("saving note...");
-                progressDialog.show();
-                progressDialog.setCancelable(false);
-                progressDialog.setCanceledOnTouchOutside(false);
-
-                SharedPreferences sharedPreferences = getSharedPreferences("credential", Context.MODE_PRIVATE);
-                String token = sharedPreferences.getString("access_token", "");
-
-                call = KeepApiClient.getKeepApiService()
+                Call<CreateNoteResponse> call = KeepApiClient.getKeepApiService()
                         .postCreateNote(token, this.title, this.eventId, this.content);
                 call.enqueue(new Callback<CreateNoteResponse>() {
                     @Override
@@ -136,7 +172,6 @@ public class CreateNoteActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<CreateNoteResponse> call, Throwable t) {
                         progressDialog.hide();
-
                         Toast.makeText(getApplicationContext(), "" + t, Toast.LENGTH_SHORT).show();
                     }
                 });

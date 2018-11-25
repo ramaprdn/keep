@@ -101,8 +101,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.delete(tableName, null, null);
     }
 
-    public void deleteEventFile(String[] id){
+    public void deleteEvent(String[] id){
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_EVENTFILE, "event_id = ?", id);
+        db.delete(TABLE_EVENT, COL_EVENT_ID + " = ?", id);
+        db.delete(TABLE_EVENTFILE, COL_EVENTFILE_EVENTID + " = ?", id);
     }
+
+    public boolean updateNote(String title, String content, String[] id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_EVENTFILE_TITLE, title);
+        contentValues.put(COL_EVENTFILE_CONTENT, content);
+        db.update(TABLE_EVENTFILE, contentValues, "id = ?", id);
+        return true;
+    }
+
+    public void deleteFileOrNote(String[] fileId){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_EVENTFILE,  COL_EVENTFILE_ID + " = ?", fileId);
+    }
+
+    public void deleteAllFileOfEvent(String[] id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_EVENTFILE,  COL_EVENTFILE_EVENTID + " = ?", id);
+    }
+
 }

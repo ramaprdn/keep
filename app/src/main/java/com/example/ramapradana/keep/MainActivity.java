@@ -8,6 +8,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 
 import com.example.ramapradana.keep.data.local.database.DatabaseHelper;
 
@@ -21,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private List<Integer> fragmentIconId = new ArrayList<>();
     TabLayout tabLayout;
     DatabaseHelper databaseHelper;
-
+    private int tabSelected = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
+                tabSelected = tab.getPosition();
                 tab.setIcon(fragmentIconId.get(tab.getPosition()));
             }
 
@@ -76,9 +79,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager){
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new FriendFragment(), "Friend");
-        adapter.addFragment(new EventFragment(), "Event");
-        adapter.addFragment(new ProfileFragment(), "Profile");
+        adapter.addFragment(new FriendFragment(), null);
+        adapter.addFragment(new EventFragment(), null);
+        adapter.addFragment(new ProfileFragment(), null);
         viewPager.setAdapter(adapter);
     }
 

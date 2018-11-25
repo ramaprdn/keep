@@ -3,6 +3,7 @@ package com.example.ramapradana.keep.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ramapradana.keep.CreateNoteActivity;
+import com.example.ramapradana.keep.EventFileDialog;
 import com.example.ramapradana.keep.R;
 import com.example.ramapradana.keep.data.remote.model.FileItem;
 
@@ -21,9 +23,12 @@ import java.util.List;
 public class EventFileAdapter extends RecyclerView.Adapter<EventFileAdapter.ViewHolder> {
     private List<FileItem> fileList = new ArrayList<>();
     private Context context;
+    private FragmentManager fragmentManager;
 
-    public EventFileAdapter(Context context){
+
+    public EventFileAdapter(Context context, FragmentManager fragmentManager){
         this.context = context;
+        this.fragmentManager = fragmentManager;
     }
 
     @NonNull
@@ -42,6 +47,34 @@ public class EventFileAdapter extends RecyclerView.Adapter<EventFileAdapter.View
 
         viewHolder.tvTitle.setText(fileItem.getEventfileTitle());
         viewHolder.tvContent.setText(fileItem.getEventfileContent());
+
+        viewHolder.itemFile.setOnLongClickListener((View.OnLongClickListener) v -> {
+            EventFileDialog eventFileDialog = new EventFileDialog(fileItem);
+            eventFileDialog.show(fragmentManager, "file menu");
+            return true;
+        });
+
+        String format = fileItem.getEventfileFormat();
+        if(format.equals("doc") || format.equals("docx") || format.equals("txt")){
+            viewHolder.ivLogo.setImageResource(R.drawable.doc);
+        }else if(format.equals("png") || format.equals("jpg") || format.equals("jpeg") || format.equals("bmp")){
+            viewHolder.ivLogo.setImageResource(R.drawable.image);
+        }else if(format.equals("ppt") || format.equals("pptx")){
+            viewHolder.ivLogo.setImageResource(R.drawable.delete_file);
+        }else if(format.equals("pdf")){
+            viewHolder.ivLogo.setImageResource(R.drawable.pdf);
+        }else if(format.equals("mp3")){
+            viewHolder.ivLogo.setImageResource(R.drawable.music_file);
+        }else if(format.equals("mp4") || format.equals("mkv")){
+            viewHolder.ivLogo.setImageResource(R.drawable.video_file);
+        }else if(format.equals("rar") || format.equals("zip")){
+            viewHolder.ivLogo.setImageResource(R.drawable.rar);
+        }else if(format.equals("note")){
+            viewHolder.ivLogo.setImageResource(R.drawable.noted);
+        }
+        else{
+            viewHolder.ivLogo.setImageResource(R.drawable.delete_file);
+        }
 
         if (fileItem.getEventfileFormat().equals("note")){
             viewHolder.itemFile.setOnClickListener((v) -> {

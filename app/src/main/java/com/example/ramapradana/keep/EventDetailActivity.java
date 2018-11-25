@@ -63,7 +63,7 @@ public class EventDetailActivity extends AppCompatActivity {
         srFile = findViewById(R.id.sr_eventfile);
         db  = new DatabaseHelper(this);
 
-        adapter = new EventFileAdapter(this);
+        adapter = new EventFileAdapter(this, getSupportFragmentManager());
         if(isNetworkConnected()){
             loadOnline();
         }else{
@@ -86,6 +86,12 @@ public class EventDetailActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        loadFromLocal();
+        super.onResume();
+    }
+
     public void loadOnline(){
         srFile.setRefreshing(true);
         SharedPreferences sharedPreferences = getSharedPreferences("credential", Context.MODE_PRIVATE);
@@ -97,8 +103,7 @@ public class EventDetailActivity extends AppCompatActivity {
             public void onResponse(Call<EventFileResponse> call, Response<EventFileResponse> response) {
                 if (response.isSuccessful()){
                     if (response.body().isStatus()){
-                        String[] args = {String.valueOf(eventsItem.getEventId())};
-                        db.deleteEventFile(args);
+                        db.deleteAllFileOfEvent(new String[] {String.valueOf(eventsItem.getEventId())});
 
                         List<FileItem> fileItems = response.body().getFile();
                         int fileCount = fileItems.size();
@@ -144,12 +149,13 @@ public class EventDetailActivity extends AppCompatActivity {
 
         if(result.getCount() == 0){
             Toast.makeText(this, "There is no file or note found!", Toast.LENGTH_LONG).show();
+            adapter.setData(localFIleItems);
             return;
         }
 
         while(result.moveToNext()){
             FileItem file = new FileItem();
-            file.setEventId(result.getInt(0));
+            file.setEventfileId(result.getInt(0));
             file.setEventId(result.getInt(1));
             file.setEventfileTitle(result.getString(2));
             file.setEventfileContent(result.getString(3));
