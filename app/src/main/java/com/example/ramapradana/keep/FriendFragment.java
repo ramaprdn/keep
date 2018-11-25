@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.ramapradana.keep.adapter.FriendAdapter;
 
@@ -36,6 +37,7 @@ public class FriendFragment extends android.support.v4.app.Fragment {
         rvFriend.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvFriend.setAdapter(friendAdapter);
         return v;
+
     }
 
     @Override
@@ -51,4 +53,5 @@ public class FriendFragment extends android.support.v4.app.Fragment {
         listFriend.add(new Friend("Chelsea Islan", "chelsea@gmail.com", R.drawable.chelseaislan));
 
     }
+
 }

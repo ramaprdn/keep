@@ -6,6 +6,7 @@
     android:layout_gravity="center">
     
     <LinearLayout
+        android:id="@+id/form"
         android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -64,7 +65,6 @@
             android:layout_marginBottom="10dp"/>
 
     </LinearLayout>
-
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/fotoprofil"
         android:layout_width="120dp"
@@ -73,5 +73,16 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:src="@drawable/jokowi"/>
+
+    <Button
+        android:padding="10dp"
+        android:textAlignment="textStart"
+        android:drawablePadding="20dp"
+        android:drawableLeft="@drawable/blok"
+        android:layout_below="@+id/form"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:text="UNFRIEND"/>
 
 </RelativeLayout>
