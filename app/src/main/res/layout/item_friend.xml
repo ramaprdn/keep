@@ -4,41 +4,43 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
-    android:padding="6dip"
-    android:layout_marginTop="10dp">
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    >
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/foto"
-        android:layout_width="70dp"
+        android:layout_width="50dp"
         android:layout_height="fill_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="6dip"
-        android:src="@drawable/jokowi"/>
+        android:layout_marginRight="16dp"
+        android:src="@drawable/ic_user"/>
 
-    <TextView
-        android:id="@+id/nama"
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/email"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignWithParentIfMissing="true"
+        android:orientation="vertical"
         android:layout_toRightOf="@id/foto"
-        android:gravity="center_vertical"
-        android:text="Ir. H. Joko Widodo"
-        android:textSize="20sp" />
+        android:layout_centerVertical="true">
 
-    <TextView
-        android:id="@+id/email"
-        android:layout_width="fill_parent"
-        android:layout_height="26dip"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@id/foto"
-        android:ellipsize="marquee"
-        android:text="jokowi@gmail.com"
-        android:textSize="16sp"
-        android:singleLine="true" />
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add Friend"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tv_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_add_friend"
+            android:text="add friend using their username"
+            android:textSize="12sp"/>
+    </LinearLayout>
 
 </RelativeLayout>

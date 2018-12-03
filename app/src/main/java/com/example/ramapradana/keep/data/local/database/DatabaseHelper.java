@@ -5,9 +5,20 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+import android.widget.Toast;
+
+import com.example.ramapradana.keep.FriendFragment;
+import com.example.ramapradana.keep.MainActivity;
+import com.example.ramapradana.keep.data.remote.model.User;
+import com.example.ramapradana.keep.data.remote.model.UserItem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "keep.db";
+    private Context context;
 
     // event table
     private static final String TABLE_EVENT = "event";
@@ -26,8 +37,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL_EVENTFILE_UPLOADBY = "upload_by";
     private static final String COL_EVENTFILE_CREATEAT = "created_at";
 
+    //friends table
+    private static final String TABLE_FRIEND = "friend";
+    private static final String COL_FRIEND_ID = "id";
+    private static final String COL_FRIEND_USERNAME  = "username";
+    private static final String COL_FRIEND_NAME = "name";
+    private static final String COL_FRIEND_EMAIL = "email";
+    private static final String COL_FRIEND_CREATED_AT = "created_at";
+    private static final String COL_FRIEND_UPDATED_AT = "updated_at";
+
+
     public DatabaseHelper(Context context){
-        super(context, DATABASE_NAME, null, 3);
+        super(context, DATABASE_NAME, null, 5);
+        this.context = context;
     }
 
     @Override
@@ -43,12 +65,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         COL_EVENTFILE_UPLOADBY +" INTEGER, "+
                         COL_EVENTFILE_CREATEAT +" TEXT)"
         );
+
+        db.execSQL(
+                "CREATE TABLE " + TABLE_FRIEND + "(" +
+                        COL_FRIEND_ID + " integer PRIMARY KEY, "+
+                        COL_FRIEND_USERNAME + " TEXT,"+
+                        COL_FRIEND_NAME + " TEXT, " +
+                        COL_FRIEND_EMAIL + " TEXT, "+
+                        COL_FRIEND_CREATED_AT + " TEXT, "+
+                        COL_FRIEND_UPDATED_AT + " TEXT)"
+        );
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("drop table if exists " + TABLE_EVENT);
         db.execSQL("drop table if exists " + TABLE_EVENTFILE);
+        db.execSQL("drop table if exists " + TABLE_FRIEND);
         this.onCreate(db);
     }
 
@@ -126,4 +159,93 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.delete(TABLE_EVENTFILE,  COL_EVENTFILE_EVENTID + " = ?", id);
     }
 
+    public boolean insertFriend(int friendId, String username, String name, String email){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_FRIEND_ID, friendId);
+        contentValues.put(COL_FRIEND_USERNAME, username);
+        contentValues.put(COL_FRIEND_NAME, name);
+        contentValues.put(COL_FRIEND_EMAIL, email);
+
+        long result = db.insert(TABLE_FRIEND, null, contentValues);
+        if(result == -1){
+           return false;
+        }else{
+            return true;
+        }
+    }
+
+    public Cursor getAllFriend(){
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor result = db.rawQuery("select * from " + TABLE_FRIEND + " order by "+ COL_FRIEND_ID +" desc", null);
+        return result;
+    }
+
+    public void synchronizeFriendData(List<UserItem> friends){
+        List<UserItem> tempFriends = friends;
+        Log.d("JUMLAH FRIEND", tempFriends.size() + "");
+
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor friendList = this.getAllFriend();
+
+        int start = 0;
+        int offlineFriendId = 0;
+        int onlineFriendId = 0;
+
+        // data from online and offline is sorted desc by id
+        // so it easy to know new record or deleted record
+        Log.d("JUMLAH FRIEND OFFLINE", friendList.getCount() + "");
+        if(friendList.getCount() == 0){
+            Log.d("ACTION", "Karena kosong, insert dari online");
+            for(int i = 0; i < tempFriends.size(); i++){
+                UserItem userItem = tempFriends.get(i);
+
+                boolean inserted = this.insertFriend(
+                        userItem.getUserId(),
+                        userItem.getUserUsername(),
+                        userItem.getUserName(),
+                        userItem.getUserEmail()
+                );
+
+                if (!inserted){
+                    Toast.makeText(context, "Error inserted", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }else{
+            Log.d("ACTION", "Sync");
+            while(friendList.moveToNext()){
+                for(int i = start; i < tempFriends.size(); i++){
+                    offlineFriendId = friendList.getInt(0);
+                    onlineFriendId = tempFriends.get(i).getUserId();
+
+                    //there is no problem. the record is match between online and offline
+                    if(offlineFriendId == onlineFriendId) {
+                        tempFriends.remove(i);
+                        break;
+                    }
+
+                    //this mean the local record is not exist in online.
+                    //the local record must be delete
+                    else if(offlineFriendId > onlineFriendId){
+                        db.delete(TABLE_FRIEND, COL_FRIEND_ID + " = ?", new String[] {String.valueOf(offlineFriendId)});
+                        break;
+                    }
+
+                    //this is new record in online and have to insert in sqlite
+                    else if(offlineFriendId < onlineFriendId){
+                        this.insertFriend(
+                                tempFriends.get(i).getUserId(),
+                                tempFriends.get(i).getUserUsername(),
+                                tempFriends.get(i).getUserName(),
+                                tempFriends.get(i).getUserEmail()
+                        );
+
+                        tempFriends.remove(i);
+                        continue;
+                    }
+                }
+            }
+        }
+
+    }
 }

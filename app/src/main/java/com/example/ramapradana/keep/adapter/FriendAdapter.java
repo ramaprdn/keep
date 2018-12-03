@@ -15,7 +15,10 @@ import android.widget.TextView;
 
 import com.example.ramapradana.keep.Friend;
 import com.example.ramapradana.keep.R;
+import com.example.ramapradana.keep.data.remote.model.User;
+import com.example.ramapradana.keep.data.remote.model.UserItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,12 +28,26 @@ import java.util.List;
 public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.MyViewHolder> {
 
     Context mContext;
-    List<Friend> mData;
+    List<UserItem> mData;
     Dialog myDialog;
+    OnClickListener onClickListener;
 
-    public FriendAdapter(Context mContext, List<Friend> mData) {
+   public interface OnClickListener{
+       void onClick(int pos);
+   }
+
+    public FriendAdapter(Context mContext) {
         this.mContext = mContext;
-        this.mData = mData;
+        this.mData = new ArrayList<>();
+    }
+
+    public void setData(List<UserItem> userItemList){
+       this.mData = userItemList;
+       notifyDataSetChanged();
+    }
+
+    public void setOnClickListener(OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
     }
 
     @NonNull
@@ -49,14 +66,16 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.MyViewHold
         vHolder.item_friend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TextView dialog_name_tv = (TextView) myDialog.findViewById(R.id.detail_name);
-                TextView dialog_email_tv = (TextView) myDialog.findViewById(R.id.detail_email);
-                ImageView dialog_foto_img = (ImageView) myDialog.findViewById(R.id.fotoprofil);
-                dialog_name_tv.setText(mData.get(vHolder.getAdapterPosition()).getName());
-                dialog_email_tv.setText(mData.get(vHolder.getAdapterPosition()).getEmail());
-                dialog_foto_img.setImageResource(mData.get(vHolder.getAdapterPosition()).getPhoto());
-                //Toast.makeText(mContext,"Test Click"+String.valueOf(vHolder.getAdapterPosition()),Toast.LENGTH_SHORT).show();
-                myDialog.show();
+
+//                TextView dialog_name_tv = (TextView) myDialog.findViewById(R.id.detail_name);
+//                TextView dialog_email_tv = (TextView) myDialog.findViewById(R.id.detail_email);
+//                ImageView dialog_foto_img = (ImageView) myDialog.findViewById(R.id.fotoprofil);
+//
+//                dialog_name_tv.setText(friend.getUserName());
+//                dialog_email_tv.setText(friend.getUserEmail());
+//                dialog_foto_img.setImageResource(R.drawable.chelseaislan);
+//                //Toast.makeText(mContext,"Test Click"+String.valueOf(vHolder.getAdapterPosition()),Toast.LENGTH_SHORT).show();
+//                myDialog.show();
             }
         });
 
@@ -65,9 +84,8 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
-        myViewHolder.tv_name.setText(mData.get(i).getName());
-        myViewHolder.tv_email.setText(mData.get(i).getEmail());
-        myViewHolder.img.setImageResource(mData.get(i).getPhoto());
+        myViewHolder.tv_name.setText(mData.get(i).getUserName());
+        myViewHolder.tv_email.setText(mData.get(i).getUserEmail());
     }
 
     @Override
@@ -75,7 +93,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.MyViewHold
         return mData.size();
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder{
+    public  class MyViewHolder extends RecyclerView.ViewHolder{
 
         private RelativeLayout item_friend;
         private TextView tv_name;
@@ -85,9 +103,15 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.MyViewHold
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             item_friend = (RelativeLayout) itemView.findViewById(R.id.friend_item_id);
-            tv_name = (TextView) itemView.findViewById(R.id.nama);
-            tv_email = (TextView) itemView.findViewById(R.id.email);
+            tv_name = (TextView) itemView.findViewById(R.id.tv_name);
+            tv_email = (TextView) itemView.findViewById(R.id.tv_email);
             img = (ImageView) itemView.findViewById(R.id.foto);
+
+            if (onClickListener != null){
+                itemView.setOnClickListener(v -> {
+                    onClickListener.onClick(getAdapterPosition());
+                });
+            }
         }
     }
 }

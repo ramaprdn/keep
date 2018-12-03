@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".FriendFragment"
-    android:fitsSystemWindows="true">
+    android:background="#ffffff">
 
     <!-- TODO: Update blank fragment layout -->
     <RelativeLayout
@@ -13,64 +13,103 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/foto"
-            android:layout_marginLeft="10dp"
-            android:padding="6dp"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_marginTop="10dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:src="@drawable/jokowi" />
-
-        <TextView
-            android:id="@+id/nama"
-            android:layout_width="70dp"
-            android:layout_height="40dp"
-            android:padding="6dp"
-            android:layout_marginTop="19dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignWithParentIfMissing="true"
-            android:layout_toRightOf="@id/foto"
-            android:text="Ir. H. Joko Widodo"
-            android:textStyle="bold"
-            android:textSize="20sp"/>
-
-        <TextView
-            android:layout_marginLeft="10dp"
-            android:id="@+id/friend"
+        <RelativeLayout
+            android:id="@+id/rv_user_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/nama"
-            android:text="Add Friends"
-            android:layout_marginTop="20dp"/>
+            android:padding="16dp">
 
-        <Button
-            android:id="@+id/btn_addfriend"
-            android:layout_below="@id/friend"
-            android:layout_width="310dp"
-            android:layout_centerHorizontal="true"
-            android:layout_height="50dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/colorPrimary"
-            android:text="Add friends"
-            android:drawableTop="@drawable/add_friend"/>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_photo_profile"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginRight="16dp"
+                android:padding="2dp"
+                android:src="@drawable/ic_user_smile" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_toRightOf="@id/iv_photo_profile"
+                android:layout_centerVertical="true">
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nama User"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tv_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_name"
+                    android:text="rama@gmail.com"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
 
         <TextView
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginLeft="16dp"
             android:id="@+id/daftar_teman"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/btn_addfriend"
+            android:layout_below="@id/rv_user_profile"
             android:text="Friends"/>
 
+        <RelativeLayout
+            android:id="@+id/rv_add_friend"
+            android:layout_below="@id/daftar_teman"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_add_friend"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="16dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_add_circle_outline" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_toRightOf="@id/iv_add_friend"
+                android:layout_centerVertical="true">
+
+                <TextView
+                    android:id="@+id/tv_add_friend"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Add Friend"
+                    android:textSize="15sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tv_add_friend_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_add_friend"
+                    android:text="add friend using their username"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+        </RelativeLayout>
+
         <android.support.v7.widget.RecyclerView
-            android:layout_below="@+id/daftar_teman"
+            android:id="@+id/rv_friend_list"
+            android:layout_below="@+id/rv_add_friend"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/friend_recyclerview"
+            tools:listitem="@layout/item_friend"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager">
 
         </android.support.v7.widget.RecyclerView>

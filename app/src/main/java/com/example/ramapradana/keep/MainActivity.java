@@ -1,6 +1,11 @@
 package com.example.ramapradana.keep;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -10,6 +15,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.widget.Toast;
 
 import com.example.ramapradana.keep.data.local.database.DatabaseHelper;
 
@@ -32,6 +38,11 @@ public class MainActivity extends AppCompatActivity {
 
         Calligrapher calligrapher = new Calligrapher(this);
         calligrapher.setFont(this, "Product Sans Regular.ttf", true);
+
+//        check read storage permission.
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
+        }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -70,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
     private void setupFragmentIcon(){
         fragmentIconId.add(R.drawable.friend);
         fragmentIconId.add(R.drawable.note);
-        fragmentIconId.add(R.drawable.profile);
 
         for(int i = 0; i < fragmentIconId.size(); i++){
             tabLayout.getTabAt(i).setIcon(fragmentIconId.get(i));
@@ -81,8 +91,14 @@ public class MainActivity extends AppCompatActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new FriendFragment(), null);
         adapter.addFragment(new EventFragment(), null);
-        adapter.addFragment(new ProfileFragment(), null);
         viewPager.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Toast.makeText(this, "masuk ke main aktiviti", Toast.LENGTH_SHORT).show();
     }
 
     static class ViewPagerAdapter extends FragmentPagerAdapter{

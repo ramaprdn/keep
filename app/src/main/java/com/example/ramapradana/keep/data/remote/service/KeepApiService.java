@@ -4,14 +4,19 @@ import com.example.ramapradana.keep.data.remote.model.CreateEventResponse;
 import com.example.ramapradana.keep.data.remote.model.CreateNoteResponse;
 import com.example.ramapradana.keep.data.remote.model.EventFileResponse;
 import com.example.ramapradana.keep.data.remote.model.EventsResponse;
+import com.example.ramapradana.keep.data.remote.model.FriendsResponse;
 import com.example.ramapradana.keep.data.remote.model.LoginApiResponse;
 import com.example.ramapradana.keep.data.remote.model.PostApiResponse;
+import com.example.ramapradana.keep.data.remote.model.SearchUserResponse;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -60,4 +65,23 @@ public interface KeepApiService {
     @FormUrlEncoded
     @POST("event/delete")
     Call<PostApiResponse> deleteEvent(@Field("event_id") int eventId, @Field("access_token") String token);
+
+    @Multipart
+    @POST("event/new")
+    Call<PostApiResponse> uploadEventFile(
+            @Query("access_token") String token,
+            @Query("event_id") int eventId,
+            @Part MultipartBody.Part file
+            );
+
+    @GET("user/search/{username}")
+    Call<SearchUserResponse> searchUser(@Path("username") String username, @Query("access_token") String token);
+
+    @FormUrlEncoded
+    @POST("user/add/{friendId}")
+    Call<PostApiResponse> addFriend(@Path("friendId") int friendId, @Field("access_token") String token);
+
+    @GET("friend")
+    Call<FriendsResponse> getFriend(@Query("access_token") String token);
+
 }

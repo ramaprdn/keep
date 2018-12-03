@@ -164,6 +164,7 @@ public class EventFragment extends android.support.v4.app.Fragment {
         Cursor result = db.getAllEvent();
         if (result.getCount() == 0){
             Snackbar.make(view, "There is no data found!", Snackbar.LENGTH_LONG).show();
+            eventAdapter.setData(eventsItemList);
             return;
         }
 

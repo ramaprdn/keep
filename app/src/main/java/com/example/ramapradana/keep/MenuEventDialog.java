@@ -2,6 +2,7 @@ package com.example.ramapradana.keep;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -10,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Keep;
@@ -17,23 +19,31 @@ import android.support.annotation.NonNull;
 import android.support.design.button.MaterialButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatDialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ramapradana.keep.Utils.ProgressRequestBody;
+import com.example.ramapradana.keep.Utils.UploadCallbackListener;
 import com.example.ramapradana.keep.data.local.database.DatabaseHelper;
 import com.example.ramapradana.keep.data.remote.model.EventsItem;
 import com.example.ramapradana.keep.data.remote.model.PostApiResponse;
 import com.example.ramapradana.keep.data.remote.service.KeepApiClient;
+import com.ipaulpro.afilechooser.utils.FileUtils;
+
+import java.io.File;
 
 import me.anwarshahriar.calligrapher.Calligrapher;
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 @SuppressLint("ValidFragment")
-public class MenuEventDialog extends AppCompatDialogFragment {
+public class MenuEventDialog extends AppCompatDialogFragment implements UploadCallbackListener {
+    private static final int PICK_FILE_REQUEST = 1001;
     private EventsItem eventsItem;
     private MaterialButton btnEdit;
     private MaterialButton btnCreateNote;
@@ -41,6 +51,10 @@ public class MenuEventDialog extends AppCompatDialogFragment {
     private MaterialButton btnDelete;
     private Call<PostApiResponse> deleteEvent;
     private DatabaseHelper db;
+    private Uri uriSelectedFile;
+    private ProgressDialog progressDialog;
+    private Call<PostApiResponse> upload;
+
 
     @SuppressLint("ValidFragment")
     public MenuEventDialog(EventsItem eventsItem){
@@ -65,11 +79,6 @@ public class MenuEventDialog extends AppCompatDialogFragment {
         db = new DatabaseHelper(getContext());
 
         builder.setView(view).setTitle(eventsItem.getEventName());
-
-        //check read storage permission.
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
-        }
 
         btnEdit.setOnClickListener(v -> {
             EditEventDialog editEventDialog = new EditEventDialog(eventsItem);
@@ -136,15 +145,94 @@ public class MenuEventDialog extends AppCompatDialogFragment {
             alert.show();
         });
 
-//        btnUploadFileClicked();
+        btnUploadFileClicked();
 
         return builder.create();
     }
 
-//    private void btnUploadFileClicked() {
-//        btnUploadFile.setOnClickListener((v) -> {
-//            Intent intent = FileUtil
-//        });
-//    }
+    private void btnUploadFileClicked() {
+        btnUploadFile.setOnClickListener((v) -> {
+            dismiss();
+            Intent intent = Intent.createChooser(FileUtils.createGetContentIntent(), "Select a file");
+            startActivityForResult(intent, PICK_FILE_REQUEST);
+        });
+    }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case 100:{
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    Toast.makeText(getContext(), "permission granted", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(getContext(), "permission not granted", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Toast.makeText(getContext(), "berjalan difragment", Toast.LENGTH_SHORT).show();
+//        Log.d("RESULT", "ON activity result");
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK){
+//            Toast.makeText(getContext(), "result ok", Toast.LENGTH_SHORT).show();
+            if (requestCode == PICK_FILE_REQUEST){
+//                Toast.makeText(getContext(), "request oke", Toast.LENGTH_SHORT).show();
+                if(data != null){
+                    uriSelectedFile = data.getData();
+                    uploadFile();
+                }
+            }
+        }
+    }
+
+    private void uploadFile() {
+        if (uriSelectedFile != null){
+            progressDialog = new ProgressDialog(getContext());
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressDialog.setMessage("Uploading...");
+            progressDialog.setIndeterminate(false);
+            progressDialog.setMax(100);
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+
+            File file = FileUtils.getFile(getContext(), uriSelectedFile);
+            ProgressRequestBody requestBody = new ProgressRequestBody(file, this);
+
+            MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
+
+            new Thread(() -> {
+                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("credential", Context.MODE_PRIVATE);
+                upload = KeepApiClient.getKeepApiService()
+                        .uploadEventFile(
+                                sharedPreferences.getString("access_token", ""),
+                                eventsItem.getEventId(),
+                                body);
+                upload.enqueue(new Callback<PostApiResponse>() {
+                    @Override
+                    public void onResponse(Call<PostApiResponse> call, Response<PostApiResponse> response) {
+                        progressDialog.dismiss();
+                        if (response.isSuccessful() && response.code() == 200){
+                            Toast.makeText(getContext(), response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(getContext(), "could not upload.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<PostApiResponse> call, Throwable t) {
+                        progressDialog.dismiss();
+                        Toast.makeText(getContext(), "Server error", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }).start();
+        }
+    }
+
+    @Override
+    public void onProgressUpdate(int percentage) {
+        progressDialog.setProgress(percentage);
+    }
 }
