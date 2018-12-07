@@ -52,7 +52,8 @@
                 <data android:mimeType="*/*" />
             </intent-filter>
         </activity>
-        <activity android:name=".SearchFriendActivity"></activity>
+        <activity android:name=".SearchFriendActivity" />
+        <activity android:name=".InviteFriendActivity"></activity>
     </application>
 
 </manifest>

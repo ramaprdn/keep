@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -21,7 +22,12 @@ public class MessagingService extends FirebaseMessagingService {
     @Override
     public void onNewToken(String s) {
 //        super.onNewToken(s);
-        Log.d("token", s);
+        SharedPreferences sharedPreferences = getSharedPreferences("fcm", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("token", s);
+        editor.apply();
+
+        Log.d("FCM", s);
     }
 
 

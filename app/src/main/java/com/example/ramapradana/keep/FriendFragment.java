@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +21,8 @@ import android.widget.Toast;
 import com.example.ramapradana.keep.adapter.FriendAdapter;
 import com.example.ramapradana.keep.data.local.database.DatabaseHelper;
 import com.example.ramapradana.keep.data.remote.model.FriendsResponse;
-import com.example.ramapradana.keep.data.remote.model.SearchUserResponse;
-import com.example.ramapradana.keep.data.remote.model.User;
 import com.example.ramapradana.keep.data.remote.model.UserItem;
 import com.example.ramapradana.keep.data.remote.service.KeepApiClient;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +43,7 @@ public class FriendFragment extends android.support.v4.app.Fragment {
     private RelativeLayout rlAddFriend;
     private Call<FriendsResponse> getFriend;
     private String token;
-    private List<UserItem> friends;
+    private List<UserItem> friends = new ArrayList<>();
     private DatabaseHelper db;
     private FriendAdapter friendAdapter;
     private TextView tvName;
@@ -65,7 +62,7 @@ public class FriendFragment extends android.support.v4.app.Fragment {
         tvName = v.findViewById(R.id.tv_name);
         tvEmail = v.findViewById(R.id.tv_email);
 
-        friends = new ArrayList<>();
+//        friends = new ArrayList<>();
 
         db = new DatabaseHelper(getContext());
 
@@ -87,27 +84,23 @@ public class FriendFragment extends android.support.v4.app.Fragment {
         }
         //
 
-        friendAdapter = new FriendAdapter(getContext());
-
-
-        rvFriend.setLayoutManager(new LinearLayoutManager(getActivity()));
-        rvFriend.setAdapter(friendAdapter);
         return v;
 
+    }
+
+    public void setAdapter(List<UserItem> userItems){
+        friendAdapter = new FriendAdapter(getContext(), userItems);
+        friendAdapter.setData(userItems);
+
+//        friendsAdapter = new FriendsAdapter(getContext(), friends);
+        Log.d("FRIEND IN SET ADAPTER", userItems.toString());
+        rvFriend.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvFriend.setAdapter(friendAdapter);
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        listFriend = new ArrayList<>();
-        listFriend.add(new Friend("Joko Widodo", "jokowi@gmail.com", R.drawable.jokowi));
-        listFriend.add(new Friend("Donald Trump", "donaldtrump@gmail.com", R.drawable.donaldtrump));
-        listFriend.add(new Friend("Kim Jong Un", "kimjongun@gmail.com", R.drawable.kimjongun));
-        listFriend.add(new Friend("Isyana Sarasvati", "isyana@gmail.com", R.drawable.isyanasarasvati));
-        listFriend.add(new Friend("Raisa Andriana", "andrianaras@gmail.com", R.drawable.raisaandriana));
-        listFriend.add(new Friend("Chelsea Islan", "chelsea@gmail.com", R.drawable.chelseaislan));
-
     }
 
     public void loadFromCloud(){
@@ -119,10 +112,14 @@ public class FriendFragment extends android.support.v4.app.Fragment {
             public void onResponse(Call<FriendsResponse> call, Response<FriendsResponse> response) {
                 if(response.isSuccessful()){
                     if(response.body().isStatus()){
-                        friends.clear();
-                        friends = response.body().getUser();
+//                        friends.clear();
+                        friends.addAll(response.body().getUser());
+                        Log.d("RESPONSE FRIENDS", response.body().getUser().toString());
+
+                        Log.d("FRIEND", friends.toString());
                         db.synchronizeFriendData(friends);
-                        friendAdapter.setData(friends);
+                        setAdapter(response.body().getUser());
+                        Log.d("FRIEND ADAPTER COUNT", friendAdapter.getItemCount() + "");
                     }else{
                         Toast.makeText(getActivity().getApplicationContext(), response.body().getMsg(), Toast.LENGTH_SHORT).show();
                     }
@@ -154,6 +151,7 @@ public class FriendFragment extends android.support.v4.app.Fragment {
 
         if (result.getCount() > 0){
             friendAdapter.setData(friends);
+            setAdapter(friends);
         }
 
     }

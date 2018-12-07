@@ -110,8 +110,6 @@ public class SearchFriendActivity extends AppCompatActivity {
         token = sharedPreferences.getString("access_token", "");
 
         btnSearch.setOnClickListener((v) -> {
-
-
             String username = tvUsername.getText().toString();
             if(!username.equals("")){
                 progressDialog = new ProgressDialog(SearchFriendActivity.this);

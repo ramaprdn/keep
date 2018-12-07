@@ -9,6 +9,8 @@ import com.example.ramapradana.keep.data.remote.model.LoginApiResponse;
 import com.example.ramapradana.keep.data.remote.model.PostApiResponse;
 import com.example.ramapradana.keep.data.remote.model.SearchUserResponse;
 
+import java.util.List;
+
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -25,7 +27,10 @@ public interface KeepApiService {
     Call<PostApiResponse> postRegistration(@Query("name") String name, @Query("username") String username, @Query("email") String email, @Query("password") String password);
 
     @GET("login")
-    Call<LoginApiResponse> postLogin(@Query("username") String username, @Query("password") String password);
+    Call<LoginApiResponse> postLogin(
+            @Query("username") String username,
+            @Query("password") String password,
+            @Query("fcm") String fcm);
 
     @FormUrlEncoded
     @POST("event/create")
@@ -83,5 +88,9 @@ public interface KeepApiService {
 
     @GET("friend")
     Call<FriendsResponse> getFriend(@Query("access_token") String token);
+
+    @FormUrlEncoded
+    @POST("event/invite/{eventId}")
+    Call<PostApiResponse> inviteFriend(@Path("eventId") int eventId, @Field("users[]") List<Integer> users, @Field("access_token") String token);
 
 }

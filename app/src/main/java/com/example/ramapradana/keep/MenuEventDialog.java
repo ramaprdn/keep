@@ -49,6 +49,7 @@ public class MenuEventDialog extends AppCompatDialogFragment implements UploadCa
     private MaterialButton btnCreateNote;
     private MaterialButton btnUploadFile;
     private MaterialButton btnDelete;
+    private MaterialButton btnInviteFriend;
     private Call<PostApiResponse> deleteEvent;
     private DatabaseHelper db;
     private Uri uriSelectedFile;
@@ -75,6 +76,7 @@ public class MenuEventDialog extends AppCompatDialogFragment implements UploadCa
         btnCreateNote = view.findViewById(R.id.btn_create_note);
         btnUploadFile = view.findViewById(R.id.btn_upload_file);
         btnDelete = view.findViewById(R.id.btn_delete);
+        btnInviteFriend = view.findViewById(R.id.btn_invite_friend);
 
         db = new DatabaseHelper(getContext());
 
@@ -146,6 +148,8 @@ public class MenuEventDialog extends AppCompatDialogFragment implements UploadCa
         });
 
         btnUploadFileClicked();
+        btnInviteFriendClicked();
+
 
         return builder.create();
     }
@@ -155,6 +159,14 @@ public class MenuEventDialog extends AppCompatDialogFragment implements UploadCa
             dismiss();
             Intent intent = Intent.createChooser(FileUtils.createGetContentIntent(), "Select a file");
             startActivityForResult(intent, PICK_FILE_REQUEST);
+        });
+    }
+
+    private void btnInviteFriendClicked(){
+        btnInviteFriend.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), InviteFriendActivity.class);
+            intent.putExtra("eventItem", this.eventsItem);
+            startActivity(intent);
         });
     }
 

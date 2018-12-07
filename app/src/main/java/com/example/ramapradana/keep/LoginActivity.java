@@ -29,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     TextInputEditText tvUsername;
     TextInputEditText tvPassword;
     private Call<LoginApiResponse> call;
+    private String fcm;
 
 
     public static void start(Context context){
@@ -38,6 +39,9 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences sharedPreferences = getSharedPreferences("credential", Context.MODE_PRIVATE);
+        SharedPreferences fcm = getSharedPreferences("fcm", Context.MODE_PRIVATE);
+
+        this.fcm = fcm.getString("token", "");
 
         Animation animation = AnimationUtils.makeInAnimation(this, true);
         animation.start();
@@ -79,7 +83,8 @@ public class LoginActivity extends AppCompatActivity {
                 progressDialog.setCanceledOnTouchOutside(false);
 
                 call = KeepApiClient.getKeepApiService()
-                        .postLogin(username, password);
+                        .postLogin(username, password, this.fcm);
+
                 call.enqueue(new Callback<LoginApiResponse>() {
                     @Override
                     public void onResponse(Call<LoginApiResponse> call, Response<LoginApiResponse> response) {

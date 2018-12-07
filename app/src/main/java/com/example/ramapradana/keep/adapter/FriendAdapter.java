@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,13 +37,16 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.MyViewHold
        void onClick(int pos);
    }
 
-    public FriendAdapter(Context mContext) {
+    public FriendAdapter(Context mContext, List<UserItem> friends) {
         this.mContext = mContext;
-        this.mData = new ArrayList<>();
+        this.mData = friends;
+
+        Log.d("FRIENDS IN ADAPTER", friends.toString());
     }
 
     public void setData(List<UserItem> userItemList){
        this.mData = userItemList;
+        Log.d("FRIENDS IN SET DATA", userItemList.toString());
        notifyDataSetChanged();
     }
 
@@ -90,7 +94,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.MyViewHold
 
     @Override
     public int getItemCount() {
-        return mData.size();
+       return mData.size();
     }
 
     public  class MyViewHolder extends RecyclerView.ViewHolder{
