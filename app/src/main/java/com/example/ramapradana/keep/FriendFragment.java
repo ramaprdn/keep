@@ -1,9 +1,12 @@
 package com.example.ramapradana.keep;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +28,7 @@ import com.example.ramapradana.keep.data.remote.model.FriendsResponse;
 import com.example.ramapradana.keep.data.remote.model.UserItem;
 import com.example.ramapradana.keep.data.remote.service.KeepApiClient;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +53,11 @@ public class FriendFragment extends android.support.v4.app.Fragment {
     private FriendAdapter friendAdapter;
     private TextView tvName;
     private TextView tvEmail;
+    private RelativeLayout rvUserProfile;
+    private Dialog userDialog;
+    private TextView tvUserNameDialog;
+    private TextView tvUserEmailDialog;
+    private Button btnLogout;
 
     public FriendFragment() {
     }
@@ -61,6 +71,13 @@ public class FriendFragment extends android.support.v4.app.Fragment {
         rlAddFriend = v.findViewById(R.id.rv_add_friend);
         tvName = v.findViewById(R.id.tv_name);
         tvEmail = v.findViewById(R.id.tv_email);
+        rvUserProfile = v.findViewById(R.id.rv_user_profile);
+
+        userDialog = new Dialog(getContext());
+        userDialog.setContentView(R.layout.detail_friend);
+        tvUserNameDialog = userDialog.findViewById(R.id.tv_user_name);
+        tvUserEmailDialog = userDialog.findViewById(R.id.tv_user_email);
+        btnLogout = userDialog.findViewById(R.id.btn_logout);
 
 //        friends = new ArrayList<>();
 
@@ -71,22 +88,48 @@ public class FriendFragment extends android.support.v4.app.Fragment {
         tvName.setText(sharedPreferences.getString("name", ""));
         tvEmail.setText(sharedPreferences.getString("email", ""));
 
+        tvUserNameDialog.setText(sharedPreferences.getString("name", ""));
+        tvUserEmailDialog.setText(sharedPreferences.getString("email", ""));
+
         rlAddFriend.setOnClickListener(v1 -> {
             Intent intent = new Intent(getContext(), SearchFriendActivity.class);
             startActivity(intent);
         });
 
+        showProfile();
         //load data
+        loadFromLocal();
         if(this.isNetworkConnected()){
             loadFromCloud();
-        }else{
-            loadFromLocal();
         }
-        //
 
         return v;
 
     }
+
+    private void showProfile() {
+        rvUserProfile.setOnClickListener(v1 -> {
+            userDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            userDialog.show();
+
+            btnLogout.setOnClickListener(v2 -> {
+                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("credential", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.clear().apply();
+
+                if(db == null){
+                    db = new DatabaseHelper(getContext());
+                }
+                db.clean();
+
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                getContext().startActivity(intent);
+                getActivity().finish();
+
+            });
+        });
+    }
+
 
     public void setAdapter(List<UserItem> userItems){
         friendAdapter = new FriendAdapter(getContext(), userItems);
@@ -150,7 +193,6 @@ public class FriendFragment extends android.support.v4.app.Fragment {
         }
 
         if (result.getCount() > 0){
-            friendAdapter.setData(friends);
             setAdapter(friends);
         }
 

@@ -18,12 +18,22 @@ public class EventsItem implements Serializable {
 	@SerializedName("event_file_count")
 	private int eventFileCount;
 
+	@SerializedName("user_event_count")
+	private int userEventCount;
+
 	@SerializedName("event_name")
 	private String eventName;
 
 	@SerializedName("created_at")
 	private String createdAt;
 
+	public int getUserEventCount() {
+		return userEventCount;
+	}
+
+	public void setUserEventCount(int userEventCount) {
+		this.userEventCount = userEventCount;
+	}
 
 	public void setEventId(int eventId){
 		this.eventId = eventId;

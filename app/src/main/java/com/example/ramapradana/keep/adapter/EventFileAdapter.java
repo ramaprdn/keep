@@ -1,7 +1,9 @@
 package com.example.ramapradana.keep.adapter;
 
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.CardView;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ramapradana.keep.CreateNoteActivity;
 import com.example.ramapradana.keep.EventFileDialog;
@@ -24,6 +27,9 @@ public class EventFileAdapter extends RecyclerView.Adapter<EventFileAdapter.View
     private List<FileItem> fileList = new ArrayList<>();
     private Context context;
     private FragmentManager fragmentManager;
+    private static final String DOWNLOAD_BASE_URL = "https://stark-cove-43258.herokuapp.com/api/download/";
+    private DownloadManager downloadManager;
+
 
 
     public EventFileAdapter(Context context, FragmentManager fragmentManager){
@@ -76,14 +82,24 @@ public class EventFileAdapter extends RecyclerView.Adapter<EventFileAdapter.View
             viewHolder.ivLogo.setImageResource(R.drawable.delete_file);
         }
 
-        if (fileItem.getEventfileFormat().equals("note")){
-            viewHolder.itemFile.setOnClickListener((v) -> {
+
+        viewHolder.itemFile.setOnClickListener((v) -> {
+            if (fileItem.getEventfileFormat().equals("note")) {
                 Intent intent = new Intent(context, CreateNoteActivity.class);
                 intent.putExtra("update", true);
                 intent.putExtra("file", fileItem);
                 context.startActivity(intent);
-            });
-        }
+            }else{
+                //download the file
+                downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+                Uri uri = Uri.parse(DOWNLOAD_BASE_URL + fileItem.getEventfileId());
+                DownloadManager.Request request = new DownloadManager.Request(uri);
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                Long reference = downloadManager.enqueue(request);
+
+                Toast.makeText(context, "Downloading " + fileItem.getEventfileTitle(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 

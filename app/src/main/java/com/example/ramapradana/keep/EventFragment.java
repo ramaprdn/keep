@@ -122,7 +122,8 @@ public class EventFragment extends android.support.v4.app.Fragment {
                                     eventsItemList.get(i).getEventId(),
                                     eventsItemList.get(i).getEventName(),
                                     eventsItemList.get(i).getCreatedAt(),
-                                    eventsItemList.get(i).getEventFileCount()
+                                    eventsItemList.get(i).getEventFileCount(),
+                                    eventsItemList.get(i).getUserEventCount()
                             );
 
                             if(!inserted){
@@ -174,6 +175,7 @@ public class EventFragment extends android.support.v4.app.Fragment {
             event.setEventName(result.getString(1));
             event.setCreatedAt(result.getString(2));
             event.setEventFileCount(result.getInt(3));
+            event.setUserEventCount(result.getInt(4));
 
             eventsItemList.add(event);
         }

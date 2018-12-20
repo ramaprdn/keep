@@ -68,7 +68,8 @@ public class CreateEventDialog extends AppCompatDialogFragment {
                                             response.body().getEventId(),
                                             response.body().getEventName(),
                                             response.body().getCreatedAt(),
-                                            response.body().getFileCount()
+                                            response.body().getFileCount(),
+                                            0
                                     );
 
                                     if(!isInserted){

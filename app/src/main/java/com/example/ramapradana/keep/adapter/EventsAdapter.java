@@ -43,7 +43,13 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         EventsItem eventsItem = dataset.get(i);
 
-        viewHolder.tvEventName.setText(eventsItem.getEventName());
+        String title = "";
+        if(eventsItem.getUserEventCount() > 1){
+            title = eventsItem.getEventName() + " ("+ eventsItem.getUserEventCount() +")";
+        }else{
+            title = eventsItem.getEventName();
+        }
+        viewHolder.tvEventName.setText(title);
         viewHolder.tvDateAndFileCount.setText(String.valueOf(eventsItem.getCreatedAt()) + " - " + String.valueOf(eventsItem.getEventFileCount()) + " files");
 
         viewHolder.llItem.setOnLongClickListener(v -> {

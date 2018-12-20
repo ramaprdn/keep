@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/social/ic_sentiment_satisfied_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/social/ic_person_add_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -28,12 +28,10 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="f57f17" />
-                            <entry key="height" value="64" />
-                            <entry key="outputName" value="ic_user_smile" />
+                            <entry key="color" value="ffffff" />
+                            <entry key="outputName" value="ic_invite_friend" />
                             <entry key="overrideSize" value="true" />
                             <entry key="sourceFile" value="C:\Users\Rama Pradana" />
-                            <entry key="width" value="64" />
                           </map>
                         </option>
                       </PersistentState>

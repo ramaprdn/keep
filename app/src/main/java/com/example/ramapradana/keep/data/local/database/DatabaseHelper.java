@@ -26,6 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL_EVENT_NAME = "event_name";
     private static final String COL_EVENT_CREATEAT = "created_at";
     private static final String COL_EVENT_FILECOUNT = "file_count";
+    private static final String COL_EVENT_USERCOUNT = "user_count";
 
     // event file table
     private static final String TABLE_EVENTFILE = "eventfile";
@@ -48,13 +49,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     public DatabaseHelper(Context context){
-        super(context, DATABASE_NAME, null, 5);
+        super(context, DATABASE_NAME, null, 6);
         this.context = context;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table event(id integer primary key, event_name text, created_at text, file_count integer)");
+        db.execSQL("create table event(id integer primary key, event_name text, created_at text, file_count integer, user_count integer)");
         db.execSQL(
                 "CREATE TABLE " + TABLE_EVENTFILE + "("+
                         COL_EVENTFILE_ID + " integer PRIMARY KEY, "+
@@ -85,13 +86,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         this.onCreate(db);
     }
 
-    public boolean insertEvent(int eventId, String eventName, String createdAt, int fileCount){
+    public boolean insertEvent(int eventId, String eventName, String createdAt, int fileCount, int userCount){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_EVENT_ID, eventId);
         contentValues.put(COL_EVENT_NAME, eventName);
         contentValues.put(COL_EVENT_CREATEAT, createdAt);
         contentValues.put(COL_EVENT_FILECOUNT, fileCount);
+        contentValues.put(COL_EVENT_USERCOUNT, userCount);
         long result = db.insert(TABLE_EVENT, null, contentValues);
         if (result == -1)
             return false;
@@ -247,5 +249,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
         }
 
+    }
+
+    public void clean(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("delete from "+ TABLE_FRIEND);
+        db.execSQL("delete from "+ TABLE_EVENTFILE);
+        db.execSQL("delete from "+ TABLE_EVENT);
     }
 }

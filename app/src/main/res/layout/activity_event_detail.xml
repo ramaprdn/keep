@@ -81,6 +81,16 @@
                 android:src="@drawable/ic_attach_file_white"
                 />
 
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fab_invite_friend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fab_label="Invite friend"
+                app:fab_size="mini"
+                app:fab_colorNormal="@color/colorPrimaryDark"
+                android:src="@drawable/ic_invite_friend"
+                />
+
         </com.github.clans.fab.FloatingActionMenu>
 
 

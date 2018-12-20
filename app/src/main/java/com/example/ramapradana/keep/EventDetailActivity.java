@@ -53,6 +53,7 @@ public class EventDetailActivity extends AppCompatActivity implements UploadCall
     private EventsItem eventsItem;
     private FloatingActionButton btnUploadFile;
     private FloatingActionButton btnCreateNote;
+    private FloatingActionButton btnInviteFriend;
     private Uri uriSelectedFile;
     private ProgressDialog progressDialog;
     private Call<PostApiResponse> upload;
@@ -82,6 +83,7 @@ public class EventDetailActivity extends AppCompatActivity implements UploadCall
         srFile = findViewById(R.id.sr_eventfile);
         btnUploadFile = findViewById(R.id.fab_upload_file);
         btnCreateNote = findViewById(R.id.fab_create_note);
+        btnInviteFriend = findViewById(R.id.fab_invite_friend);
 
 
         db  = new DatabaseHelper(this);
@@ -108,7 +110,17 @@ public class EventDetailActivity extends AppCompatActivity implements UploadCall
         });
 
         btnUploadFileClicked();
+        btnCreateNoteClicked();
+        btnInviteFriendClicked();
 
+    }
+
+    private void btnInviteFriendClicked() {
+        btnInviteFriend.setOnClickListener(v -> {
+            Intent intent = new Intent(this, InviteFriendActivity.class);
+            intent.putExtra("eventItem", this.eventsItem);
+            startActivity(intent);
+        });
     }
 
     @Override
@@ -119,8 +131,23 @@ public class EventDetailActivity extends AppCompatActivity implements UploadCall
 
     private void btnUploadFileClicked() {
         btnUploadFile.setOnClickListener((v) -> {
+            progressDialog = new ProgressDialog(EventDetailActivity.this);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressDialog.setMessage("Uploading...");
+            progressDialog.setIndeterminate(false);
+            progressDialog.setMax(100);
+            progressDialog.setCancelable(false);
+
             Intent intent = Intent.createChooser(FileUtils.createGetContentIntent(), "Select a file");
             startActivityForResult(intent, PICK_FILE_REQUEST);
+        });
+    }
+
+    private void btnCreateNoteClicked(){
+        btnCreateNote.setOnClickListener(v -> {
+            Intent intent = new Intent(this, CreateNoteActivity.class);
+            intent.putExtra("event_id", eventsItem.getEventId());
+            startActivity(intent);
         });
     }
 
@@ -143,13 +170,7 @@ public class EventDetailActivity extends AppCompatActivity implements UploadCall
 
     private void uploadFile() {
         if (uriSelectedFile != null){
-            progressDialog = new ProgressDialog(EventDetailActivity.this);
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            progressDialog.setMessage("Uploading...");
-            progressDialog.setIndeterminate(false);
-            progressDialog.setMax(100);
-            progressDialog.setCancelable(false);
-//            progressDialog.show();
+            progressDialog.show();
 
             File file = FileUtils.getFile(this, uriSelectedFile);
             ProgressRequestBody requestBody = new ProgressRequestBody(file, this);
